@@ -18,12 +18,13 @@ ActiveRecord::Schema.define(version: 2023_02_16_012622) do
   create_table "courses", force: :cascade do |t|
     t.string "name"
     t.string "day"
+    t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "schedules", force: :cascade do |t|
-    t.integer "week"
+    t.boolean "bring_own_supplies"
     t.integer "student_id"
     t.integer "course_id"
     t.datetime "created_at", precision: 6, null: false
@@ -32,7 +33,7 @@ ActiveRecord::Schema.define(version: 2023_02_16_012622) do
 
   create_table "students", force: :cascade do |t|
     t.string "name"
-    t.integer "grade"
+    t.integer "age"
     t.string "username"
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false

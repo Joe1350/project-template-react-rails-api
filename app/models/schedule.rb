@@ -1,2 +1,1 @@
-class Schedule < ApplicationRecord
-end
+

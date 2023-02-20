@@ -1,2 +1,1 @@
-class CoursesController < ApplicationController
-end
+
