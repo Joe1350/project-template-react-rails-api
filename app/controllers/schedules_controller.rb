@@ -1,5 +1,6 @@
 class SchedulesController < ApplicationController
-    # wrap_parameters format: []
+    wrap_parameters format: []
+    # skip_before_action :one_class_per_day, only: :update
 
     def index
         schedules = @current_user.schedules
@@ -18,7 +19,8 @@ class SchedulesController < ApplicationController
 
     def update
         schedule = @current_user.schedules.find(params[:id])
-        schedule.update(schedule_params)
+        schedule.update!(schedule_params)
+        
         render json: schedule
     end
 

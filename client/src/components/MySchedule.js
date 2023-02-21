@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import ScheduleListing from "./ScheduleListing";
 import { UserContext } from "../context/user";
 
 function MySchedule({ courses }) {
@@ -45,16 +46,18 @@ function MySchedule({ courses }) {
 
     function handleSubmitEdit(e, course) {
         e.preventDefault()
+        setErrors([])
 
         let schedule = student.schedules.find(s => s.course_id === course.id)
-        let newCourse = courses.find(c => c.name === editFormData)      
+        let newCourse = courses.find(c => c.name === editFormData)
+        console.log(newCourse)     
 
         fetch(`/schedules/${schedule.id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
-            body:JSON.stringify({course_id: newCourse.id}),
+            body:JSON.stringify({...schedule, course_id: newCourse.id}),
         }).then(r => {
             if (r.ok) {
                 r.json().then(() => {
@@ -92,12 +95,16 @@ function MySchedule({ courses }) {
         }
     }
 
+    function renderScheduleStatement(course) {
+        console.log(course)
+    }
+
     return (
         <div style={{ padding: "5%"}}>
             <h1>{student ? `${student.name}'s` : "My"} Schedule</h1>
             {student ? student.courses.map(course => (
                 <div key={course.name}>
-                    <p>{course.name} on {course.day}</p>
+                    <ScheduleListing course={course}/>
                     <button onClick={(e) => handleDisplayEditForm(e, course)}>Edit Class</button>
                     <button onClick={() => handleDelete(course)}>Delete Class</button>
                     <br></br>
@@ -114,12 +121,16 @@ function MySchedule({ courses }) {
                             <input type="submit" value="Submit Update" /> */}
 
                             {selectedCourses === [] ? null : selectedCourses.map(c => <div key={c.name}><button onClick={changeEditFormInputValue}>{c.name}</button><br></br></div>) }
+                            <br></br>
+                            <label>
+                                Click on a class button to fill this form:
                             <input id="edit_form_input" type="text" onChange={handleEditFormChange}
                             onMouseEnter={handleHover} onMouseLeave={handleHover} value={editFormData} />
+                            </label>
                             <br></br>
                             <p id="hover_message" style={{ display:"none", color: "red" }}>Do Not type in the box! Instead, click on a class.</p>
                             <input type="submit" value="Submit Update" />
-                            {errors === [] ? null : errors.map(err => <p>{err.errors}</p>)}
+                            {errors === [] ? null : <p style={{ color: "red" }}>{errors}</p>}
                         </form>
                     </div>
                 </div>

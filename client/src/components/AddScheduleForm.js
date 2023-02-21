@@ -60,6 +60,9 @@ function AddScheduleForm({ courses, setCourses }) {
                         history.push("/schedule")
                     })
                 } else {
+                    let x = document.getElementById("add_schedule_error_message")
+
+                    x.style.display = "block"
                     r.json().then(err => setErrors(err.errors))
                 }
             })
