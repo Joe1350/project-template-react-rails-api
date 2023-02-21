@@ -26,38 +26,51 @@ function AddScheduleForm({ courses, setCourses }) {
     function handleSubmit(e) {
         e.preventDefault()
 
-        let course = courses.find(course => course.name === courseName)
+        document.getElementById("add_schedule_error_message").innerText = ""
 
-        let newSchedule = {
-            bring_own_supplies: bringOwnSupplies,
-            course_id: course.id
+        let course = courses.find(c => c.name === courseName)
+
+        if (course) {
+            fetch("/schedules", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    bring_own_supplies: bringOwnSupplies,
+                    course_id: course.id
+                }),
+            }).then(r => {
+                if (r.ok) {
+                    r.json().then(data => {
+                        
+                        // let newSchedule = {
+                        //     bring_own_supplies: bringOwnSupplies,
+                        //     course_id: course.id
+                        // }
+                        let updatedStudent = student
+                        let schedule = {
+                            id: data.id,
+                            bring_own_supplies: data.bring_own_supplies,
+                            course_id: data.course_id
+                        }
+                        updatedStudent.schedules.push(schedule)
+                        updatedStudent.courses.push(course)
+                        setStudent(updatedStudent)
+                        history.push("/schedule")
+                    })
+                } else {
+                    r.json().then(err => setErrors(err.errors))
+                }
+            })
+        } else {
+            let x = document.getElementById("add_schedule_error_message")
+
+            x.style.display = "block"
+            x.innerText = "Must select a day and/or a class"
         }
 
-        fetch("/schedules", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newSchedule),
-        }).then(r => {
-            if (r.ok) {
-                r.json().then(data => {
-                    let updatedStudent = student
-                    let schedule = {
-                        id: data.id,
-                        bring_own_supplies: data.bring_own_supplies,
-                        course_id: data.course_id
-                    }
-                    updatedStudent.schedules.push(schedule)
-                    let course = courses.find(c => c.name === courseName)
-                    updatedStudent.courses.push(course)
-                    setStudent(updatedStudent)
-                    history.push("/schedule")
-                })
-            } else {
-                r.json().then(err => setErrors(err.errors))
-            }
-        })
+        
             
     }
 
@@ -124,9 +137,7 @@ function AddScheduleForm({ courses, setCourses }) {
                 </label>
                 <br></br>
                 <input type="submit" value="Enroll"/>
-                {errors === [] ? null : errors.map(err => (
-                    <p style={{ color: "red" }}>{err}</p>
-                ))}
+                {errors === [] ? null : <p id="add_schedule_error_message" style={{ color: "red", display: "none" }}>{errors}</p>}
             </form>
         </div>
     )
