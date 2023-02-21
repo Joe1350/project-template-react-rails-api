@@ -7,6 +7,9 @@ This is a website to view vailable courses and sign up for classes at Learning P
 I'm not planning on working any further on this except maybe some minor cleanup.
 
 ## Instalation
+fork and clone your own copy of the repository.
+navigate to the folder.
+run `bundle install`, `npm install --prefix client`, `rails db:migrate db:seed`. After that, start the server for the front and back ends. I open 2 terminals in one I run `rails s`, and `npm start --prefix client`.
 
 
 ## Usage

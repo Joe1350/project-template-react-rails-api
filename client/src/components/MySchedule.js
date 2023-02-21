@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react";
 import ScheduleListing from "./ScheduleListing";
+import EditSuppliesInput from "./EditSuppliesInput";
 import { UserContext } from "../context/user";
 
 function MySchedule({ courses }) {
     const [editFormData, setEditFormData] = useState("");
     const [selectedCourses, setSelectedCourses] = useState([])
     const [errors, setErrors] = useState([])
+    const [checked, setChecked] = useState(false)
     const { student, setStudent } = useContext(UserContext)
 
     function handleDisplayEditForm(e, course) {
@@ -95,10 +97,6 @@ function MySchedule({ courses }) {
         }
     }
 
-    function renderScheduleStatement(course) {
-        console.log(course)
-    }
-
     return (
         <div style={{ padding: "5%"}}>
             <h1>{student ? `${student.name}'s` : "My"} Schedule</h1>
@@ -120,7 +118,15 @@ function MySchedule({ courses }) {
                             <br></br>
                             <input type="submit" value="Submit Update" /> */}
 
-                            
+                            {/* <label>
+                                Bring your own supplies:
+                                <input type="checkbox" onChange={() => setChecked(!checked)}/>
+                            </label> */}
+                            {/* <EditSuppliesInput
+                                course={course}
+                                checked={checked}
+                                setChecked={setChecked}
+                            /> */}
 
                             {selectedCourses === [] ? null : selectedCourses.map(c => <div key={c.name}><button onClick={changeEditFormInputValue}>{c.name}</button><br></br></div>) }
                             <br></br>
