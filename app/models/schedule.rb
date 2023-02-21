@@ -6,7 +6,7 @@ class Schedule < ApplicationRecord
 
     private
 
-    def one_class_per_day#, unless: :skip_validation?
+    def one_class_per_day
 
         course = Course.find(self.course_id)
         student = Student.find(self.student_id)

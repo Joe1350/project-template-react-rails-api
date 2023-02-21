@@ -120,6 +120,8 @@ function MySchedule({ courses }) {
                             <br></br>
                             <input type="submit" value="Submit Update" /> */}
 
+                            
+
                             {selectedCourses === [] ? null : selectedCourses.map(c => <div key={c.name}><button onClick={changeEditFormInputValue}>{c.name}</button><br></br></div>) }
                             <br></br>
                             <label>
