@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
     skip_before_action :authorize
+    wrap_parameters format: []
 
     def index
         courses = Course.all.order(day: :asc)
@@ -7,8 +8,8 @@ class CoursesController < ApplicationController
     end
 
     def create
-        course = Course.create(course_params)
-        render json: course, status: :created
+        course = Course.create!(course_params)
+        render json: course
     end
 
     private

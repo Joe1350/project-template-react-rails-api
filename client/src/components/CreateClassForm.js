@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 function CreateClassForm({ courses, onSetCourses }) {
+    const [errors, setErrors] = useState([])
     const [formData, setFormData] = useState({
         name: "",
-        day: "",
-        description: ""
+        day: "monday" // ,
+        // description: ""
     })
 
     const history = useHistory()
@@ -21,16 +22,33 @@ function CreateClassForm({ courses, onSetCourses }) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(newCourse),
+        }).then(r => {
+            if (r.ok) {
+                r.json().then(newClassData => onSetCourses(newClassData))
+                // setFormData({
+                //     name: "",
+                //     day: "" // ,
+                //     // description: ""
+                // })
+                history.push("/browse")
+            } else {
+                r.json().then((err) => setErrors(err.errors))
+            }
         })
-            .then(r => r.json())
-            .then(newClassData => onSetCourses(newClassData))
-            setFormData({
-                name: "",
-                day: "" // ,
-                // description: ""
-            })
-            history.push("/browse")
+            
     }
+
+    // .then((r) => {
+    //     setIsLoading(false);
+    //     if (r.ok) {
+    //         r.json().then((user) => setStudent(user));
+    //         history.push("/")
+    //     } else {
+    //         r.json().then((err) => setErrors(err.errors));
+    //     }
+    // });
+
+    console.log(errors)
 
     function handleChange(e) {
         setFormData({
@@ -74,6 +92,7 @@ function CreateClassForm({ courses, onSetCourses }) {
                 </label> */}
                 {/* <br></br> */}
                 <input type="submit" value="Add Class" />
+                {errors === [] ? null : <p style={{ color: "red" }}>{errors}</p>}
             </form>
         </div>
     )
