@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import ScheduleListing from "./ScheduleListing";
-import EditSuppliesInput from "./EditSuppliesInput";
+// import EditSuppliesInput from "./EditSuppliesInput";
 import { UserContext } from "../context/user";
 
 function MySchedule({ courses }) {
@@ -12,6 +12,10 @@ function MySchedule({ courses }) {
 
     function handleDisplayEditForm(e, course) {
         const x = document.getElementById(`${course.id}`)
+
+        let schedule = student.schedules.find(s => s.course_id === course.id)
+
+        setChecked(schedule.bring_own_supplies)
 
         if (x.style.display === "none") {
             x.style.display = "block"
@@ -50,6 +54,8 @@ function MySchedule({ courses }) {
         e.preventDefault()
         setErrors([])
 
+        const x = document.getElementById(`${course.id}`)
+
         let schedule = student.schedules.find(s => s.course_id === course.id)
         let newCourse = courses.find(c => c.name === editFormData)
         console.log(newCourse)     
@@ -59,11 +65,12 @@ function MySchedule({ courses }) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body:JSON.stringify({...schedule, course_id: newCourse.id}),
+            body:JSON.stringify({...schedule, course_id: newCourse.id, bring_own_supplies: checked}),
         }).then(r => {
             if (r.ok) {
                 r.json().then(() => {
-                    let updatedSchedules = student.schedules.map(s => s.id === schedule.id ? {...s, course_id: newCourse.id} : s )
+                    let updatedSchedules = student.schedules.map(s => s.id === schedule.id ? {...s, course_id: newCourse.id, bring_own_supplies: checked} : s )
+                    console.log(updatedSchedules)
                     let updatedCourses = student.courses.map(c => c.id === course.id ? {...c, name: newCourse.name, id: newCourse.id} : c )
                     console.log(updatedCourses)
                     let updatedStudent = {
@@ -97,6 +104,10 @@ function MySchedule({ courses }) {
         }
     }
 
+    function handleCheckedChange(e) {
+        setChecked(e.target.checked)
+    }
+
     return (
         <div style={{ padding: "5%"}}>
             <h1>{student ? `${student.name}'s` : "My"} Schedule</h1>
@@ -118,15 +129,13 @@ function MySchedule({ courses }) {
                             <br></br>
                             <input type="submit" value="Submit Update" /> */}
 
-                            {/* <label>
+                            <label>
                                 Bring your own supplies:
-                                <input type="checkbox" onChange={() => setChecked(!checked)}/>
-                            </label> */}
-                            {/* <EditSuppliesInput
-                                course={course}
-                                checked={checked}
-                                setChecked={setChecked}
-                            /> */}
+                                <input
+                                    type="checkbox"
+                                    checked={checked} 
+                                    onChange={handleCheckedChange}/>
+                            </label>
 
                             {selectedCourses === [] ? null : selectedCourses.map(c => <div key={c.name}><button onClick={changeEditFormInputValue}>{c.name}</button><br></br></div>) }
                             <br></br>

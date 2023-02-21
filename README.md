@@ -11,7 +11,6 @@ fork and clone your own copy of the repository.
 navigate to the folder.
 run `bundle install`, `npm install --prefix client`, `rails db:migrate db:seed`. After that, start the server for the front and back ends. I open 2 terminals in one I run `rails s`, and `npm start --prefix client`.
 
-
 ## Usage
 You can sign up as a user. You can log in and out of your account. You can view available classes. You can sign up for classes. You can view, edit, and delete the classes you have signed up for.
 
