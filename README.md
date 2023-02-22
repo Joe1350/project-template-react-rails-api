@@ -20,5 +20,8 @@ There is no support for this project.
 ## Roadmap
 If I were to continue this project, I would like to change how the days are stored so I can display the class list in chronilogical order. Set up a filter and select for the class list. I would like to change the edit form back to a dropdown. Have my schedule display chronilogically.
 
+## Aknowledgment
+Images used in this project came from [pexels](www.pexels.com)
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
